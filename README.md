@@ -1,6 +1,6 @@
 ![screens](https://github.com/drummyfish/bombman/blob/master/resources/logo.png?raw=true)
 
-Open-source Bomberman clone under GPL!
+Open-source Bomberman clone under GPL! Graphic assets are under CC0.
 
 ![screenshot](http://i.imgur.com/3xbgAPM.png)
 
