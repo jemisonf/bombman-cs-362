@@ -2,7 +2,7 @@
 
 ![screens](https://github.com/drummyfish/bombman/blob/master/resources/logo.png?raw=true)
 
-FOSS Bomberman clone under GPL! Graphic assets are under CC0.
+FOSS Bomberman clone!
 
 To run, simply do `python bombman.py`.
 
