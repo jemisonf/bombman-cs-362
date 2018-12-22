@@ -4,6 +4,8 @@
 
 FOSS Bomberman clone under GPL! Graphic assets are under CC0.
 
+To run, simply do `python bombman.py`.
+
 ![screenshot](http://i.imgur.com/3xbgAPM.png)
 
 Early developmnet Video:
