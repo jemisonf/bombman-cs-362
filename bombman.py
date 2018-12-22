@@ -1874,8 +1874,8 @@ class GameMap(object):
             transmitted = True
             player_at_tile.set_disease(player.get_disease(),player.get_disease_time())  # transmit disease
           
-        if transmitted and random.randint(0,2) == 0:
-          self.add_sound_event(SoundPlayer.SOUND_EVENT_GO_AWAY)
+        #if transmitted and random.randint(0,2) == 0:
+        #  self.add_sound_event(SoundPlayer.SOUND_EVENT_GO_AWAY)
 
   #----------------------------------------------------------------------------
 
@@ -2577,7 +2577,7 @@ class SoundPlayer(object):
   def __init__(self):
     self.sound_volume = 0.5
     self.music_volume = 0.5
-    
+   
     self.sounds = {}
     self.sounds[SoundPlayer.SOUND_EVENT_EXPLOSION] = pygame.mixer.Sound(os.path.join(Game.RESOURCE_PATH,"explosion.wav"))
     self.sounds[SoundPlayer.SOUND_EVENT_BOMB_PUT] = pygame.mixer.Sound(os.path.join(Game.RESOURCE_PATH,"bomb.wav"))
@@ -2592,22 +2592,18 @@ class SoundPlayer(object):
     self.sounds[SoundPlayer.SOUND_EVENT_TRAMPOLINE] = pygame.mixer.Sound(os.path.join(Game.RESOURCE_PATH,"trampoline.wav"))
     self.sounds[SoundPlayer.SOUND_EVENT_TELEPORT] = pygame.mixer.Sound(os.path.join(Game.RESOURCE_PATH,"teleport.wav"))
     self.sounds[SoundPlayer.SOUND_EVENT_DEATH] = pygame.mixer.Sound(os.path.join(Game.RESOURCE_PATH,"death.wav"))
-    self.sounds[SoundPlayer.SOUND_EVENT_GO_AWAY] = pygame.mixer.Sound(os.path.join(Game.RESOURCE_PATH,"go_away.wav"))
     self.sounds[SoundPlayer.SOUND_EVENT_GO] = pygame.mixer.Sound(os.path.join(Game.RESOURCE_PATH,"go.wav"))
     self.sounds[SoundPlayer.SOUND_EVENT_EARTHQUAKE] = pygame.mixer.Sound(os.path.join(Game.RESOURCE_PATH,"earthquake.wav"))
     self.sounds[SoundPlayer.SOUND_EVENT_CONFIRM] = pygame.mixer.Sound(os.path.join(Game.RESOURCE_PATH,"confirm.wav"))
-    
+
     self.music_filenames = [
-      "music_broke_for_free_caught_in_the_beat_remix.wav",
-      "music_broke_for_free_covered_in_oil_remix.wav",
-      "music_jason_shaw_extasy_x_remix.wav",
-      "music_jason_shaw_icecold_remix.wav",
-      "music_jason_shaw_night_rave.wav",
-      "music_wake_68_glytch_funk_remix.wav",
-      "music_seclorance_cleaner_remix.wav",
-      "music_broke_for_free_nothing_like_captain_crunch_remix.wav",
-      "music_jesse_spillane_spastic_mumblings_remix.wav"]
-    
+      "music_loyalty_freak_slow_pogo.wav",
+      "music_anonymous420_start_to_play.wav",
+      "music_anonymous420_first_step_for_your_tech.wav",
+      "music_anonymous420_echo_blues_effect.wav",
+      "music_loyalty_freak_music_enby.wav"
+      ]
+ 
     self.current_music_index = -1
     
     self.playing_walk = False
@@ -2693,7 +2689,6 @@ class SoundPlayer(object):
         SoundPlayer.SOUND_EVENT_TRAMPOLINE,
         SoundPlayer.SOUND_EVENT_TELEPORT,
         SoundPlayer.SOUND_EVENT_DEATH,
-        SoundPlayer.SOUND_EVENT_GO_AWAY,
         SoundPlayer.SOUND_EVENT_GO,
         SoundPlayer.SOUND_EVENT_EARTHQUAKE,
         SoundPlayer.SOUND_EVENT_CONFIRM
@@ -3311,15 +3306,9 @@ class AboutMenu(Menu):
 
   def __init__(self,sound_player):
     super(AboutMenu,self).__init__(sound_player) 
-    self.text = ("^#2E44BFBombman^#FFFFFF - an open-source Atomic Bomberman clone, ^#4EF259version " + Game.VERSION_STR + "\n"
-                 "copyright Miloslav \"tastyfish\" Ciz, 2016\n\n"
-                 "This software is published under GPL license version 3. It's goal is to recreate\n"
-                 "a wonderful experience of Atomic Bomberman, a game that is due to its age no\n"
-                 "longer easily playable. This project aims to only provide fun and intends to make\n"
-                 "no money. All graphics was made by the autor using free software only. Sound\n"
-                 "resources were used under CC attribution license. Software used to make this game\n"
-                 "includes Python 2.7, Pygame, GIMP, Kate, Audacity and Ubuntu Linux. Special thanks\n"
-                 "goes to freesound.org and freemusicarchive.org for providing free audio resources.")
+    self.text = ("^#2E44BFBombman^#FFFFFF - free Bomberman clone, ^#4EF259version " + Game.VERSION_STR + "\n"
+                 "Miloslav \"tastyfish\" Ciz, 2016\n\n"
+                 "This game is free software, published under CC0 1.0.\n")
     self.items = [["ok, nice, back"]]
 
 #==============================================================================
@@ -3489,7 +3478,7 @@ class Renderer(object):
   ANIMATION_EVENT_DIE = 4
   
   FONT_SMALL_SIZE = 12
-  FONT_NORMAL_SIZE = 20
+  FONT_NORMAL_SIZE = 25
   MENU_LINE_SPACING = 10
   MENU_FONT_COLOR = (255,255,255)
   
@@ -3508,8 +3497,8 @@ class Renderer(object):
     self.preview_map_name = ""
     self.preview_map_image = None
 
-    self.font_small = pygame.font.Font(os.path.join(Game.RESOURCE_PATH,"Roboto-Medium.ttf"),Renderer.FONT_SMALL_SIZE)
-    self.font_normal = pygame.font.Font(os.path.join(Game.RESOURCE_PATH,"Roboto-Medium.ttf"),Renderer.FONT_NORMAL_SIZE)
+    self.font_small = pygame.font.Font(os.path.join(Game.RESOURCE_PATH,"LibertySans.ttf"),Renderer.FONT_SMALL_SIZE)
+    self.font_normal = pygame.font.Font(os.path.join(Game.RESOURCE_PATH,"LibertySans.ttf"),Renderer.FONT_NORMAL_SIZE)
 
     self.previous_mouse_coordinates = (-1,-1)
 
@@ -5092,7 +5081,7 @@ class Game(object):
   CHEAT_ALL_ITEMS = 1
   CHEAT_PLAYER_IMMORTAL = 2
   
-  VERSION_STR = "0.0"
+  VERSION_STR = "0.95"
   
   NUMBER_OF_CONTROLLED_PLAYERS = 4    ##< maximum number of non-AI players on one PC
   
