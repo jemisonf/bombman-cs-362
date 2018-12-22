@@ -1,6 +1,10 @@
+**License update**: from version 0.95 the whole game, including media, is **CC0**. The assets were replaced by ones released under CC0.
+
 ![screens](https://github.com/drummyfish/bombman/blob/master/resources/logo.png?raw=true)
 
-Open-source Bomberman clone under GPL! Graphic assets are under CC0.
+FOSS Bomberman clone under GPL! Graphic assets are under CC0.
+
+To run, simply do `python bombman.py`.
 
 ![screenshot](http://i.imgur.com/3xbgAPM.png)
 
