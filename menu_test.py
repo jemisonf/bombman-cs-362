@@ -22,6 +22,15 @@ class MenuTestCase(unittest.TestCase):
         self.assertEqual(menu.get_selected_item(), (0,0))
         menu.prompt_if_needed((0,0))
         self.assertEqual(menu.get_state(), Menu.MENU_STATE_CONFIRM_PROMPT)
+
+    def testPromptIfNeededWithConditionsNotMet(self):
+        """ Test if the user is not prompted when the right conditions are not met """
+        menu = self.menu
+        menu.state =  Menu.MENU_STATE_CONFIRM
+        menu.confirm_prompt_result = True
+        self.assertEqual(menu.get_selected_item(), (0,0))
+        menu.prompt_if_needed((0,0))
+        self.assertNotEqual(menu.get_state(), Menu.MENU_STATE_CONFIRM_PROMPT)
     
     # TODO this appears to be an actual bug
     def testScrollDown(self):
