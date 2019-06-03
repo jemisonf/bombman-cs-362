@@ -1,6 +1,7 @@
 from bombman import PlaySetup
 import unittest
 
+print "===Running PlaySetup class tests==="
 class PlaySetupTestCase(unittest.TestCase):
     def setUp(self):
          self.set = PlaySetup()
