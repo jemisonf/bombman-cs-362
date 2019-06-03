@@ -1,0 +1,8 @@
+from bombman import MapTile
+
+import unittest
+
+class MapTileTestCase(unittest.TestCase):
+	def setUp(self):
+		testTile = MapTile()
+		
