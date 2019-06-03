@@ -26,3 +26,11 @@ class ItemTestCase(unittest.TestCase):
         countBomb.time_of_existence = 3
 
         assert(countBomb.time_until_explosion() == 7)
+
+    def testExplosion(self):
+        player = Player()
+        shortfuse = Bomb(player)
+
+        shortfuse.explodes()
+
+        assert(shortfuse.has_exploded == True)
