@@ -1,8 +1,25 @@
-from bombman import MapTile
+from bombman import MapTile, GameMap, PlaySetup
 
 import unittest
 
-class MapTileTestCase(unittest.TestCase):
+print "Running MapTile class tests"
+
+class GameMapTestCase(unittest.TestCase):
 	def setUp(self):
-		testTile = MapTile()
+		path = os.path.join('maps','classic')
+		fileObj = open(path)
+		mapData = fileObj.read()	#Get the classic map data
+		self.gameMap = GameMap(self, mapData, PlaySetup(), 1, 1)
 		
+		self.testFloor = testFloor
+		self.testWall = testWall
+		self.testBlock = testBlock
+	
+	def 
+
+	
+
+
+
+	
+
