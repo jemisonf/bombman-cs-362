@@ -50,7 +50,7 @@ class AITestCase(unittest.TestCase):
         self.testPlayer.set_position((1,0))        
         assert(self.testAI.decide_general_direction() != tmp)# make sure that it's reacting to players
 
-    def testTraped(self):
+    def testTrapped(self):
         assert(not self.testAI.is_trapped())# The ai is not initaly traped
         self.aiPlayer.set_position((-1,-1))
         assert(self.testAI.is_trapped())# Ai is out of bounds and has no where to go
@@ -74,4 +74,5 @@ class AITestCase(unittest.TestCase):
 
 
 
-unittest.main()
+if __name__ == "__main__":
+    unittest.main()
