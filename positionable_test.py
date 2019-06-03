@@ -53,5 +53,5 @@ class PositionableTestCase(unittest.TestCase):
         assert(not testPlayer.is_near_tile_center())
 
 
-
-unittest.main()
+if __name__ == "__main__":
+    unittest.main()
