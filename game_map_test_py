@@ -1,21 +1,26 @@
 from bombman import MapTile, GameMap, PlaySetup
-
+import os
 import unittest
 
-print "Running MapTile class tests"
+print "===Running GameMap class tests==="
 
 class GameMapTestCase(unittest.TestCase):
 	def setUp(self):
 		path = os.path.join('maps','classic')
 		fileObj = open(path)
 		mapData = fileObj.read()	#Get the classic map data
+
 		self.gameMap = GameMap(self, mapData, PlaySetup(), 1, 1)
 		
 		self.testFloor = testFloor
 		self.testWall = testWall
 		self.testBlock = testBlock
-	
-	def 
+
+	def testStartingItems(self):
+		map = self.gameMap
+
+if __name__ == "__main__":
+	unittest.main()
 
 	
 
