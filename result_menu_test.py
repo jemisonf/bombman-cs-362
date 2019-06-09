@@ -55,10 +55,10 @@ class ResultMenuTestCase(unittest.TestCase):
         """ test output when multiple teams win """ 
         menu = self.menu
         # these expected output values are finicky and might need to be tweaked if the test seems like it should be passing
-        expected_output = "Winner teams are ^#ff4b4bred^#FFFFFF, ^#555555black^#FFFFFF!\n" \
+        expected_output = "Winners teams are: ^#555555black^#FFFFFF, ^#ff4b4bred^#FFFFFF!\n" \
                           "__________________________________________________\n" \
                           "^#555555black^#FFFFFF (^#5555552^#FFFFFF): 0/0     " \
-                          "^#ff4b4bred^#FFFFFF (^#ff4b4b^#FFFFFF): 0/0\n\n" \
+                          "^#ff4b4bred^#FFFFFF (^#ff4b4b3^#FFFFFF): 0/0\n\n" \
                           "__________________________________________________"
         # here we expected a message congradulating *two* teams and then a line with two columns for two players
 
@@ -73,7 +73,7 @@ class ResultMenuTestCase(unittest.TestCase):
         expected_output = "Winner team is ^#555555black^#FFFFFF!\n" \
                           "__________________________________________________\n" \
                           "^#555555black^#FFFFFF (^#5555552^#FFFFFF): 0/1     " \
-                          "^#ff4b4bred^#FFFFFF (^#ff4b4b^#FFFFFF): 0/0     " \
+                          "^#ff4b4bred^#FFFFFF (^#ff4b4b3^#FFFFFF): 0/0     " \
                           "^#4bff4bgreen^#FFFFFF (^#5555552^#FFFFFF): 0/1\n\n" \
                           "__________________________________________________"
         # here we expected three columns below a message congradulating *one* team

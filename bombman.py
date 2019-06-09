@@ -79,6 +79,8 @@ import random
 import re
 import time
 
+from collections import defaultdict
+
 DEBUG_PROFILING = False
 DEBUG_FPS = False
 DEBUG_VERBOSE = False
@@ -2987,6 +2989,8 @@ class MainMenu(Menu):
 
 class ResultMenu(Menu):
 
+  SEPARATOR = "__________________________________________________"
+
   #----------------------------------------------------------------------------
 
   def __init__(self, sound_player):
@@ -2995,40 +2999,47 @@ class ResultMenu(Menu):
     self.items = [["I get it"]]
 
   #----------------------------------------------------------------------------
+
+  def _format_player_cel(self, player):
+    return (
+        Renderer.colored_color_name(player.get_number()) + " (" +
+        Renderer.colored_text(player.get_team_number(),str(player.get_team_number() + 1)) + "): " +
+        str(player.get_kills()) + "/" + str(player.get_wins())
+        )
+
+  #----------------------------------------------------------------------------
     
   def set_results(self, players):
     win_maximum = 0
     winner_team_numbers = []
     
+    teams = {}
+
     for player in players:
-      if player.get_wins() > win_maximum:
-        winner_team_numbers = [player.get_team_number()]
-        win_maximum = player.get_wins()        
-      elif player.get_wins() == win_maximum:
-        winner_team_numbers.append(player.get_team_number())
-    
-    separator = "__________________________________________________"
-    
+      if teams.has_key(player.team_number):
+        teams[player.get_team_number()]["wins"] = teams[player.get_team_number()]["wins"] + player.get_wins()
+      else:
+        teams[player.get_team_number()] = {}
+        teams[player.get_team_number()]["wins"] = player.get_wins()
+
+    for team_number, team in teams.items():
+      if team["wins"] == win_maximum:
+        winner_team_numbers.append(team_number)
+      elif team["wins"] > win_maximum:
+        win_maximum = team["wins"]
+        winner_team_numbers = [team_number]
+
     if len(winner_team_numbers) == 1:
       announcement_text = "Winner team is " + Renderer.colored_color_name(winner_team_numbers[0]) + "!"
     else:
       announcement_text = "Winners teams are: "
-      
-      first = True
-      
-      for winner_number in winner_team_numbers:
-        if first:
-          first = False
-        else:
-          announcement_text += ", "
-          
-        announcement_text += Renderer.colored_color_name(winner_team_numbers[winner_number])
-    
+      announcement_text += ", ".join(
+                                      map(lambda team_no: Renderer.colored_color_name(team_no),
+                                          winner_team_numbers))
       announcement_text += "!"
     
-    self.text = announcement_text + "\n" + separator + "\n"
+    self.text = announcement_text + "\n" + ResultMenu.SEPARATOR + "\n"
     
-    player_number = 0
     row = 0
     column = 0
     
@@ -3036,14 +3047,9 @@ class ResultMenu(Menu):
     columns_by_player_count = (1,2,3,2,3,3,4,4,3,5)
     table_columns = columns_by_player_count[len(players) - 1]
     
-    while player_number < len(players):
-      player = players[player_number]
-      
-      self.text += (
-        Renderer.colored_color_name(player.get_number()) + " (" +
-        Renderer.colored_text(player.get_team_number(),str(player.get_team_number() + 1)) + "): " +
-        str(player.get_kills()) + "/" + str(player.get_wins())
-        )
+    for player in players:
+
+      self.text += self._format_player_cel(player)
       
       column += 1
       
@@ -3054,9 +3060,7 @@ class ResultMenu(Menu):
       else:
         self.text += "     "
       
-      player_number += 1
-    
-    self.text += "\n" + separator
+    self.text += "\n" + ResultMenu.SEPARATOR
 
 #==============================================================================
     
