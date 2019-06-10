@@ -1,4 +1,5 @@
-from bombman import *
+import random
+import bombman
 
 #==============================================================================
 
@@ -79,8 +80,8 @@ class GameMap(object):
     column = 0
     
     # function call to translate map data on tiles into MapTile objects
-    
-    tile_translator(string_split[3], block_tiles)
+
+    self.tile_translator(string_split[3], block_tiles)
 
     # place items under the block tiles:
     
@@ -143,8 +144,8 @@ class GameMap(object):
 
     column = 0
     line = -1
-    block_tiles = []
-    for i in xrange(len(tileData):
+
+    for i in xrange(len(tileData)):
       tile_character = tileData[i]
 
       if i % GameMap.MAP_WIDTH == 0: # add new row

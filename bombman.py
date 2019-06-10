@@ -80,7 +80,7 @@ import re
 import time
 
 from collections import defaultdict
-from game_map import *
+from game_map import GameMap
 
 DEBUG_PROFILING = False
 DEBUG_FPS = False
