@@ -79,6 +79,8 @@ import random
 import re
 import time
 
+from collections import defaultdict
+
 DEBUG_PROFILING = False
 DEBUG_FPS = False
 DEBUG_VERBOSE = False
@@ -2987,6 +2989,8 @@ class MainMenu(Menu):
 
 class ResultMenu(Menu):
 
+  SEPARATOR = "__________________________________________________"
+
   #----------------------------------------------------------------------------
 
   def __init__(self, sound_player):
@@ -2995,68 +2999,79 @@ class ResultMenu(Menu):
     self.items = [["I get it"]]
 
   #----------------------------------------------------------------------------
-    
-  def set_results(self, players):
-    win_maximum = 0
-    winner_team_numbers = []
-    
-    for player in players:
-      if player.get_wins() > win_maximum:
-        winner_team_numbers = [player.get_team_number()]
-        win_maximum = player.get_wins()        
-      elif player.get_wins() == win_maximum:
-        winner_team_numbers.append(player.get_team_number())
-    
-    separator = "__________________________________________________"
-    
-    if len(winner_team_numbers) == 1:
-      announcement_text = "Winner team is " + Renderer.colored_color_name(winner_team_numbers[0]) + "!"
-    else:
-      announcement_text = "Winners teams are: "
-      
-      first = True
-      
-      for winner_number in winner_team_numbers:
-        if first:
-          first = False
-        else:
-          announcement_text += ", "
-          
-        announcement_text += Renderer.colored_color_name(winner_team_numbers[winner_number])
-    
-      announcement_text += "!"
-    
-    self.text = announcement_text + "\n" + separator + "\n"
-    
-    player_number = 0
-    row = 0
-    column = 0
-    
-    # decide how many columns for different numbers of players will the table have
-    columns_by_player_count = (1,2,3,2,3,3,4,4,3,5)
-    table_columns = columns_by_player_count[len(players) - 1]
-    
-    while player_number < len(players):
-      player = players[player_number]
-      
-      self.text += (
+
+  def _format_player_cel(self, player):
+    return (
         Renderer.colored_color_name(player.get_number()) + " (" +
         Renderer.colored_text(player.get_team_number(),str(player.get_team_number() + 1)) + "): " +
         str(player.get_kills()) + "/" + str(player.get_wins())
         )
+
+  #----------------------------------------------------------------------------
+
+  def _format_winning_teams(self, players):
+    announcement_text =""
+
+    win_maximum = 0
+    winner_team_numbers = []
+    
+    teams = defaultdict(int) # { team_number : number_of_wins }
+
+    for player in players:
+      teams[player.get_team_number()] += 1
+
+    for team_number, team_wins in teams.items():
+      if team_wins == win_maximum:
+        winner_team_numbers.append(team_number)
+      elif team_wins > win_maximum:
+        win_maximum = team_wins
+        winner_team_numbers = [team_number]
+
+    if len(winner_team_numbers) == 1:
+      announcement_text = "Winner team is " + Renderer.colored_color_name(winner_team_numbers[0]) + "!"
+    else:
+      announcement_text = "Winners teams are: "
+      announcement_text += ", ".join(map(lambda team_no: Renderer.colored_color_name(team_no),
+                                     winner_team_numbers))
+      announcement_text += "!"
+    
+    return announcement_text
+
+  #----------------------------------------------------------------------------
+
+  def _format_player_stats(self, players):
+    announcement_text = ""
+    row = 0
+    column = 0
+    # decide how many columns for different numbers of players will the table have
+    columns_by_player_count = (1,2,3,2,3,3,4,4,3,5)
+    table_columns = columns_by_player_count[len(players) - 1]
+    
+    for player in players:
+
+      announcement_text += self._format_player_cel(player)
       
       column += 1
       
       if column >= table_columns:
         column = 0
         row += 1
-        self.text += "\n"
+        announcement_text += "\n"
       else:
-        self.text += "     "
-      
-      player_number += 1
+        announcement_text += "     "
     
-    self.text += "\n" + separator
+    return announcement_text
+
+  #----------------------------------------------------------------------------
+
+  def set_results(self, players):
+    self.text = self._format_winning_teams(players)
+
+    self.text += "\n" + ResultMenu.SEPARATOR + "\n"
+
+    self.text += self._format_player_stats(players) 
+      
+    self.text += "\n" + ResultMenu.SEPARATOR
 
 #==============================================================================
     
