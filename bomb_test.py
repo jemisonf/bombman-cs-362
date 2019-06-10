@@ -34,3 +34,6 @@ class ItemTestCase(unittest.TestCase):
         shortfuse.explodes()
 
         assert(shortfuse.has_exploded == True)
+
+if __name__ == "__main__":
+    unittest.main()
