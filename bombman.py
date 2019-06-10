@@ -108,7 +108,7 @@ class Profiler(object):
       return
       
     if not (section_name in self.sections):
-      self.sections[section_name] = [0.0 for i in range(Profiler.SHOW_LAST)]
+      self.sections[section_name] = [0.0 for i in xrange(Profiler.SHOW_LAST)]
 
     section_values = self.sections[section_name]
         
@@ -148,7 +148,7 @@ class Profiler(object):
       
       section_values = self.sections[section_name]
       
-      for i in range(len(section_values)):
+      for i in xrange(len(section_values)):
         result += str(section_values[i]).ljust(5)
         
       result += " AVG: " + str(sum(section_values) / float(len(section_values)))
@@ -445,7 +445,7 @@ class Player(Positionable):
     result = []
     
     for item in self.items:
-      result += [item for i in range(self.items[item])]
+      result += [item for i in xrange(self.items[item])]
         
     return result
 
@@ -1182,7 +1182,7 @@ class GameMap(object):
     # make the tiles array:
     self.danger_map_is_up_to_date = False                    # to regenerate danger map only when needed
     self.tiles = []
-    self.starting_positions = [(0.0,0.0) for i in range(10)] # starting position for each player
+    self.starting_positions = [(0.0,0.0) for i in xrange(10)] # starting position for each player
 
     map_data = map_data.replace(" ","").replace("\n","")     # get rid of white characters
 
@@ -1213,7 +1213,7 @@ class GameMap(object):
     teleport_b_tile = None
     self.number_of_blocks = 0    ##< says how many block tiles there are currently on the map
 
-    for i in range(len(string_split[3])):
+    for i in xrange(len(string_split[3])):
       tile_character = string_split[3][i]
 
       if i % GameMap.MAP_WIDTH == 0: # add new row
@@ -1280,14 +1280,14 @@ class GameMap(object):
 
     # place items under the block tiles:
     
-    for i in range(len(string_split[2])):
+    for i in xrange(len(string_split[2])):
       random_tile = random.choice(block_tiles)
       random_tile.item = self.letter_to_item(string_split[2][i])
       block_tiles.remove(random_tile)
 
     # init danger map:
     
-    self.danger_map = [[GameMap.SAFE_DANGER_VALUE for i in range(GameMap.MAP_WIDTH)] for j in range(GameMap.MAP_HEIGHT)]  ##< 2D array of times in ms for each square that
+    self.danger_map = [[GameMap.SAFE_DANGER_VALUE for i in xrange(GameMap.MAP_WIDTH)] for j in xrange(GameMap.MAP_HEIGHT)]  ##< 2D array of times in ms for each square that
        
     # initialise players:
 
@@ -1297,7 +1297,7 @@ class GameMap(object):
 
     player_slots = play_setup.get_slots()
 
-    for i in range(len(player_slots)):
+    for i in xrange(len(player_slots)):
       if player_slots[i] != None:
         new_player = Player()
         new_player.set_number(i)
@@ -1314,7 +1314,7 @@ class GameMap(object):
     
     self.player_starting_items = []
     
-    for i in range(len(start_items_string)):
+    for i in xrange(len(start_items_string)):
       for player in self.players:
         item_to_give = self.letter_to_item(start_items_string[i])
         
@@ -1413,7 +1413,7 @@ class GameMap(object):
       flame_stop       = [False,                           False,                           False,                           False]
       tile_increment   = [(0,-1),                          (1,0),                           (0,1),                           (-1,0)]
     
-      for i in range(bomb.flame_length):
+      for i in xrange(bomb.flame_length):
         for direction in (0,1,2,3):
           if flame_stop[direction]:
             continue
@@ -1629,7 +1629,7 @@ class GameMap(object):
     
     # spread the flame in all 4 directions:
 
-    for i in range(bomb.flame_length + 1):
+    for i in xrange(bomb.flame_length + 1):
       if i >= bomb.flame_length:
         flame_stop = [True, True, True, True]
 
@@ -1674,8 +1674,8 @@ class GameMap(object):
   def spread_items(self, items):
     possible_tiles = []
     
-    for y in range(GameMap.MAP_HEIGHT):
-      for x in range(GameMap.MAP_WIDTH):
+    for y in xrange(GameMap.MAP_HEIGHT):
+      for x in xrange(GameMap.MAP_WIDTH):
         tile = self.tiles[y][x]
         
         if tile.kind == MapTile.TILE_FLOOR and tile.special_object == None and tile.item == None and not self.tile_has_player((x,y)):
@@ -2031,7 +2031,7 @@ class PlaySetup(object):
   #----------------------------------------------------------------------------
   
   def __init__(self):
-    self.player_slots = [None for i in range(10)]    ##< player slots: (player_number, team_color),
+    self.player_slots = [None for i in xrange(10)]    ##< player slots: (player_number, team_color),
                                                      #   negative player_number = AI, slot index ~ player color index
     self.number_of_games = 10
     
@@ -2150,8 +2150,8 @@ class PlayerKeyMaps(StringSerializable):
   def __init__(self):
     self.key_maps = {}  ##< maps keys to tuples of a format: (player_number, action), for general actions player_number will be -1
     
-    self.bomb_key_last_pressed_time = [0 for i in range(10)]  ##< for bomb double press detection
-    self.bomb_key_previous_state = [False for i in range(10)] ##< for bomb double press detection
+    self.bomb_key_last_pressed_time = [0 for i in xrange(10)]  ##< for bomb double press detection
+    self.bomb_key_previous_state = [False for i in xrange(10)] ##< for bomb double press detection
 
     self.allow_mouse_control = False    ##< if true, player movement by mouse is allowed, otherwise not
 
@@ -2189,10 +2189,10 @@ class PlayerKeyMaps(StringSerializable):
     self.name_code_mapping = {}     # holds a mapping of key names to pygame key codes, since pygame itself offers no such functionality   
     keys_pressed = pygame.key.get_pressed()
     
-    for key_code in range(len(keys_pressed)):
+    for key_code in xrange(len(keys_pressed)):
       self.name_code_mapping[pygame.key.name(key_code)] = key_code
      
-    self.typed_string_buffer = [" " for i in range(PlayerKeyMaps.TYPED_STRING_BUFFER_LENGTH)]
+    self.typed_string_buffer = [" " for i in xrange(PlayerKeyMaps.TYPED_STRING_BUFFER_LENGTH)]
      
     self.reset()
 
@@ -2220,7 +2220,7 @@ class PlayerKeyMaps(StringSerializable):
   def get_mouse_button_events(self):
     result = []
     
-    for i in range(5):
+    for i in xrange(5):
       result.append(self.mouse_button_states[i] and not self.previous_mouse_button_states[i])
     
     return result
@@ -2233,7 +2233,7 @@ class PlayerKeyMaps(StringSerializable):
     if frame_number != self.last_mouse_update_frame:
       # first time calling this function this frame => reset states
     
-      for i in range(5):      # for each of 5 buttons
+      for i in xrange(5):      # for each of 5 buttons
         self.previous_mouse_button_states[i] = self.mouse_button_states[i]
     
       button_states = pygame.mouse.get_pressed()
@@ -2261,7 +2261,7 @@ class PlayerKeyMaps(StringSerializable):
   #----------------------------------------------------------------------------
         
   def clear_typing_buffer(self):
-    self.typed_string_buffer = [" " for i in range(PlayerKeyMaps.TYPED_STRING_BUFFER_LENGTH)]
+    self.typed_string_buffer = [" " for i in xrange(PlayerKeyMaps.TYPED_STRING_BUFFER_LENGTH)]
 
   #----------------------------------------------------------------------------
         
@@ -2391,7 +2391,7 @@ class PlayerKeyMaps(StringSerializable):
   def save_to_string(self):
     result = ""
 
-    for i in range(Game.NUMBER_OF_CONTROLLED_PLAYERS):  # 4 players
+    for i in xrange(Game.NUMBER_OF_CONTROLLED_PLAYERS):  # 4 players
       mapping = self.get_players_key_mapping(i)
       
       for action in mapping:
@@ -2469,7 +2469,7 @@ class PlayerKeyMaps(StringSerializable):
 
     result = []
 
-    reset_bomb_key_previous_state = [True for i in range(10)]
+    reset_bomb_key_previous_state = [True for i in xrange(10)]
 
     # check mouse control:
 
@@ -2507,7 +2507,7 @@ class PlayerKeyMaps(StringSerializable):
         
       helper_buttons = (PlayerKeyMaps.MOUSE_CONTROL_BUTTON_L, PlayerKeyMaps.MOUSE_CONTROL_BUTTON_M, PlayerKeyMaps.MOUSE_CONTROL_BUTTON_R)
 
-      for i in range(3):
+      for i in xrange(3):
         if pressed[i]:
           self.mouse_control_states[helper_buttons[i]] = True  
           self.mouse_control_keep_until[helper_buttons[i]] = current_time
@@ -2535,7 +2535,7 @@ class PlayerKeyMaps(StringSerializable):
           self.bomb_key_previous_state[player_number] = True
           reset_bomb_key_previous_state[player_number] = False
 
-    for i in range(10):
+    for i in xrange(10):
       if reset_bomb_key_previous_state[i]:
         self.bomb_key_previous_state[i] = False
 
@@ -2730,7 +2730,7 @@ class Animation(object):
     
     self.frame_images = []
     
-    for i in range(start_number,end_number + 1):
+    for i in xrange(start_number,end_number + 1):
       self.frame_images.append(pygame.image.load(filename_prefix + str(i) + filename_postfix))
       
     self.playing_instances = []   ##< A set of playing animations, it is a list of tuples in
@@ -3221,7 +3221,7 @@ class ControlsMenu(Menu):
     
     prompt_string = "press some key"
     
-    for i in range(Game.NUMBER_OF_CONTROLLED_PLAYERS):
+    for i in xrange(Game.NUMBER_OF_CONTROLLED_PLAYERS):
       player_string = "p " + str(i + 1)
       
       player_maps = self.player_key_maps.get_players_key_mapping(i)
@@ -3262,7 +3262,7 @@ class ControlsMenu(Menu):
       if len(mouse_actions) > 0:
         key_pressed = mouse_actions[0]
         
-      for i in range(len(keys_pressed)):      # find pressed key
+      for i in xrange(len(keys_pressed)):      # find pressed key
         if not (i in (pygame.K_NUMLOCK,pygame.K_CAPSLOCK,pygame.K_SCROLLOCK,322)) and keys_pressed[i]:
           key_pressed = i
           break
@@ -3403,7 +3403,7 @@ class PlaySetupMenu(Menu):
     self.items[0].append("back")
     self.items[1].append("next")
          
-    for i in range(10):
+    for i in xrange(10):
       slot_color = Renderer.COLOR_RGB_VALUES[i] if i != Game.COLOR_BLACK else dark_grey  # black with black border not visible, use dark grey
       
       self.items[0].append(Renderer.colored_text(i,str(i + 1)) + ": ")
@@ -3533,7 +3533,7 @@ class Renderer(object):
 
     self.player_images = []         ##< player images in format [color index]["sprite name"] and [color index]["sprite name"][frame]
 
-    for i in range(10):
+    for i in xrange(10):
       self.player_images.append({})
       
       for helper_string in ["up","right","down","left"]:
@@ -3606,7 +3606,7 @@ class Renderer(object):
     self.gui_images["prompt"] = self.render_text(self.font_normal,"You sure?",(255,255,255))
     self.gui_images["version"] = self.render_text(self.font_small,"v " + Game.VERSION_STR,(0,100,0))
     
-    self.player_info_board_images = [None for i in range(10)]  # up to date infoboard image for each player
+    self.player_info_board_images = [None for i in xrange(10)]  # up to date infoboard image for each player
 
     self.gui_images["out"] = pygame.image.load(os.path.join(Game.RESOURCE_PATH,"gui_out.png"))   
      
@@ -3715,8 +3715,8 @@ class Renderer(object):
     result = surface.copy()
     
     # change all red pixels to specified color
-    for j in range(result.get_size()[1]):
-      for i in range(result.get_size()[0]):
+    for j in xrange(result.get_size()[1]):
+      for i in xrange(result.get_size()[0]):
         pixel_color = result.get_at((i,j))
         
         if pixel_color.r == 255 and pixel_color.g == 0 and pixel_color.b == 0:
@@ -3780,7 +3780,7 @@ class Renderer(object):
   def __render_info_board_item_row(self, x, y, limit, item_type, player, board_image):   
     item_count = 20 if item_type == GameMap.ITEM_FLAME and player.get_item_count(GameMap.ITEM_SUPERFLAME) >= 1 else player.get_item_count(item_type)
    
-    for i in range(item_count):
+    for i in xrange(item_count):
       if i > limit:
         break
         
@@ -3798,7 +3798,7 @@ class Renderer(object):
   #  rerendering is done only when needed.
 
   def update_info_boards(self, players):
-    for i in range(10):      # for each player number
+    for i in xrange(10):      # for each player number
       update_needed = False
       
       if self.player_info_board_images[i] == None:
@@ -3930,7 +3930,7 @@ class Renderer(object):
     
     y_step = font.get_height() + Renderer.MENU_LINE_SPACING
     
-    for i in range(len(rendered_lines)):
+    for i in xrange(len(rendered_lines)):
       result.blit(rendered_lines[i],(0 if not center else (width - rendered_lines[i].get_size()[0]) / 2,i * y_step))
     
     return result
@@ -3947,8 +3947,8 @@ class Renderer(object):
 
     item_coordinates = []
     
-    for j in range(len(items)):
-      for i in range(len(items[j])):
+    for j in xrange(len(items)):
+      for i in xrange(len(items[j])):
         item_coordinates.append((j,i))
     
     if len(menu.get_text()) != 0:
@@ -4056,9 +4056,9 @@ class Renderer(object):
     column_x_space = 150
     
     if columns % 2 == 0:
-      xs = [self.screen_center[0] + i * column_x_space - ((columns - 1) * column_x_space / 2) for i in range(columns)] # even number of columns
+      xs = [self.screen_center[0] + i * column_x_space - ((columns - 1) * column_x_space / 2) for i in xrange(columns)] # even number of columns
     else:
-      xs = [self.screen_center[0] + (i - columns / 2) * column_x_space for i in range(columns)]
+      xs = [self.screen_center[0] + (i - columns / 2) * column_x_space for i in xrange(columns)]
     
     selected_coordinates = menu_to_render.get_selected_item()
     
@@ -4088,10 +4088,10 @@ class Renderer(object):
     
     profiler.measure_start("menu rend. items")
     
-    for j in range(len(menu_items)):
+    for j in xrange(len(menu_items)):
       y = items_y
       
-      for i in range(min(Menu.MENU_MAX_ITEMS_VISIBLE,len(menu_items[j]) - menu_to_render.get_scroll_position())):
+      for i in xrange(min(Menu.MENU_MAX_ITEMS_VISIBLE,len(menu_items[j]) - menu_to_render.get_scroll_position())):
         item_image = self.menu_item_images[(j,i + menu_to_render.get_scroll_position())][1]
 
         x = xs[j] - item_image.get_size()[0] / 2
@@ -4117,7 +4117,7 @@ class Renderer(object):
     
     mouse_events = game.get_player_key_maps().get_mouse_button_events()
     
-    for i in range(len(mouse_events)):
+    for i in xrange(len(mouse_events)):
       if mouse_events[i]:
         menu_to_render.mouse_button_pressed(i)
     
@@ -4183,8 +4183,8 @@ class Renderer(object):
         map_data = map_file.read()
         temp_map = GameMap(map_data,PlaySetup(),0,0)
         
-        for y in range(GameMap.MAP_HEIGHT):
-          for x in range(GameMap.MAP_WIDTH):
+        for y in xrange(GameMap.MAP_HEIGHT):
+          for x in xrange(GameMap.MAP_WIDTH):
             tile = temp_map.get_tile_at((x,y))
             tile_kind = tile.kind
             
@@ -4216,7 +4216,7 @@ class Renderer(object):
 
         starting_positions = temp_map.get_starting_positions()
 
-        for player_index in range(len(starting_positions)):
+        for player_index in xrange(len(starting_positions)):
           draw_position = (int(starting_positions[player_index][0]) * tile_size + tile_half_size,int(starting_positions[player_index][1]) * tile_size + tile_half_size)
            
           pygame.draw.rect(self.preview_map_image,tile_color,pygame.Rect(pos_x,pos_y,tile_size,tile_size))
@@ -4237,7 +4237,7 @@ class Renderer(object):
 
         starting_items = temp_map.get_starting_items()
         
-        for i in range(len(starting_items)):
+        for i in xrange(len(starting_items)):
           item = starting_items[i]
           
           if item in self.icon_images:
@@ -4272,8 +4272,8 @@ class Renderer(object):
 
     self.prerendered_map_background.blit(image_background,(0,0))
 
-    for j in range(GameMap.MAP_HEIGHT):
-      for i in range(GameMap.MAP_WIDTH):
+    for j in xrange(GameMap.MAP_HEIGHT):
+      for i in xrange(GameMap.MAP_WIDTH):
         render_position = (i * Renderer.MAP_TILE_WIDTH + Renderer.MAP_BORDER_WIDTH,j * Renderer.MAP_TILE_HEIGHT + + Renderer.MAP_BORDER_WIDTH)          
         self.prerendered_map_background.blit(self.environment_images[map_to_render.get_environment_name()][0],render_position)
        
@@ -4633,7 +4633,7 @@ class AI(object):
     result = [0,0,0,0]
     
     for direction in (0,1,2,3):
-      for i in range(1,self.player.get_flame_length() + 2):
+      for i in xrange(1,self.player.get_flame_length() + 2):
         axis_tile = (tile_coordinates[0] + i * axis_directions[direction][0],tile_coordinates[1] + i * axis_directions[direction][1])
         
         if not self.tile_is_escapable(axis_tile):
@@ -4931,7 +4931,7 @@ class AI(object):
       
       multibomb_safe = True
       
-      for i in range(multibomb_count):
+      for i in xrange(multibomb_count):
         if not self.game_map.tile_is_walkable(current_tile) or not self.game_map.tile_is_withing_map(current_tile):
           break
         
@@ -5050,7 +5050,7 @@ class Settings(StringSerializable):
   #----------------------------------------------------------------------------
    
   def current_resolution_index(self):
-    return next((i for i in range(len(Settings.POSSIBLE_SCREEN_RESOLUTIONS)) if self.screen_resolution == Settings.POSSIBLE_SCREEN_RESOLUTIONS[i]),0)
+    return next((i for i in xrange(len(Settings.POSSIBLE_SCREEN_RESOLUTIONS)) if self.screen_resolution == Settings.POSSIBLE_SCREEN_RESOLUTIONS[i]),0)
 
 #==============================================================================
     
@@ -5416,8 +5416,8 @@ class Game(object):
         if self.game_number != 1:
           previous_winner = self.game_map.get_winner_team()
         
-        kill_counts = [0 for i in range(10)]
-        win_counts = [0 for i in range(10)]
+        kill_counts = [0 for i in xrange(10)]
+        win_counts = [0 for i in xrange(10)]
         
         if self.game_map != None:
           for player in self.game_map.get_players():
@@ -5435,13 +5435,13 @@ class Game(object):
         if self.cheat_is_active(Game.CHEAT_PLAYER_IMMORTAL):
           self.immortal_players_numbers = []
           
-          for i in range(len(player_slots)):
+          for i in xrange(len(player_slots)):
             if player_slots[i] != None and player_slots[i][0] >= 0:   # cheat: if not AI
               self.immortal_players_numbers.append(i)                 # make the player immortal
         
         self.ais = []
         
-        for i in range(len(player_slots)):
+        for i in xrange(len(player_slots)):
           if player_slots[i] != None and player_slots[i][0] < 0:  # indicates AI
             self.ais.append(AI(self.game_map.get_players_by_numbers()[i],self.game_map))
       
@@ -5503,7 +5503,7 @@ class Game(object):
     
     profiler.measure_start("sim. AIs")
     
-    for i in range(len(self.ais)):
+    for i in xrange(len(self.ais)):
       actions_being_performed = actions_being_performed + self.ais[i].play()
       
     profiler.measure_stop("sim. AIs")
@@ -5534,12 +5534,12 @@ class Game(object):
       self.game_number = 1
       self.state = Game.STATE_GAME_STARTED
     elif setup_number == 1:
-      self.play_setup.player_slots = [(-1,i) for i in range(10)]
+      self.play_setup.player_slots = [(-1,i) for i in xrange(10)]
       self.random_map_selection = True
       self.game_number = 1
       self.state = Game.STATE_GAME_STARTED      
     else:
-      self.play_setup.player_slots = [((i,i) if i < 4 else None) for i in range(10)]
+      self.play_setup.player_slots = [((i,i) if i < 4 else None) for i in xrange(10)]
       self.map_name = "classic"
       self.game_number = 1
       self.state = Game.STATE_GAME_STARTED      
