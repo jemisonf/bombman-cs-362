@@ -1209,12 +1209,74 @@ class GameMap(object):
     line = -1
     column = 0
     
+    # function call to translate map data on tiles into MapTile objects
+
+    self.tile_translator(string_split[3], block_tiles)
+
+    # place items under the block tiles:
+    
+    for i in xrange(len(string_split[2])):
+      random_tile = random.choice(block_tiles)
+      random_tile.item = self.letter_to_item(string_split[2][i])
+      block_tiles.remove(random_tile)
+
+    # init danger map:
+    
+    self.danger_map = [[GameMap.SAFE_DANGER_VALUE for i in xrange(GameMap.MAP_WIDTH)] for j in xrange(GameMap.MAP_HEIGHT)]  ##< 2D array of times in ms for each square that
+       
+    # initialise players:
+
+    self.players = []                      ##< list of players in the game
+    self.players_by_numbers = {}           ##< mapping of numbers to players
+    self.players_by_numbers[-1] = None
+
+    player_slots = play_setup.get_slots()
+
+    for i in xrange(len(player_slots)):
+      if player_slots[i] != None:
+        new_player = Player()
+        new_player.set_number(i)
+        new_player.set_team_number(player_slots[i][1])
+        new_player.move_to_tile_center(self.starting_positions[i])
+        self.players.append(new_player)
+        self.players_by_numbers[i] = new_player
+      else:
+        self.players_by_numbers[i] = None
+        
+    # give players starting items:
+    
+    start_items_string = string_split[1] if not all_items_cheat else "bbbbbFkxtsssssmp"
+    
+    self.player_starting_items = []
+    
+    for i in xrange(len(start_items_string)):
+      for player in self.players:
+        item_to_give = self.letter_to_item(start_items_string[i])
+        
+        player.give_item(item_to_give)
+      
+      self.player_starting_items.append(item_to_give)
+        
+    self.bombs = []                   ##< bombs on the map
+    self.sound_events = []            ##< list of currently happening sound event (see SoundPlayer class)
+    self.animation_events = []        ##< list of animation events, tuples in format (animation_event, coordinates)
+    self.items_to_give_away = []      ##< list of tuples in format (time_of_giveaway, list_of_items)
+
+    self.create_disease_cloud_at = 0  ##< at what time (in ms) the disease clouds should be released
+
+  #----------------------------------------------------------------------------
+  def tile_translator(self, tileData, block_tiles):
+
+
     teleport_a_tile = None       # helper variables used to pair teleports
     teleport_b_tile = None
     self.number_of_blocks = 0    ##< says how many block tiles there are currently on the map
 
-    for i in xrange(len(string_split[3])):
-      tile_character = string_split[3][i]
+    column = 0
+    line = -1
+
+    for i in xrange(len(tileData)):
+      tile_character = tileData[i]
 
       if i % GameMap.MAP_WIDTH == 0: # add new row
         line += 1
@@ -1277,58 +1339,6 @@ class GameMap(object):
         self.starting_positions[int(tile_character)] = (float(column),float(line))
 
       column += 1
-
-    # place items under the block tiles:
-    
-    for i in xrange(len(string_split[2])):
-      random_tile = random.choice(block_tiles)
-      random_tile.item = self.letter_to_item(string_split[2][i])
-      block_tiles.remove(random_tile)
-
-    # init danger map:
-    
-    self.danger_map = [[GameMap.SAFE_DANGER_VALUE for i in xrange(GameMap.MAP_WIDTH)] for j in xrange(GameMap.MAP_HEIGHT)]  ##< 2D array of times in ms for each square that
-       
-    # initialise players:
-
-    self.players = []                      ##< list of players in the game
-    self.players_by_numbers = {}           ##< mapping of numbers to players
-    self.players_by_numbers[-1] = None
-
-    player_slots = play_setup.get_slots()
-
-    for i in xrange(len(player_slots)):
-      if player_slots[i] != None:
-        new_player = Player()
-        new_player.set_number(i)
-        new_player.set_team_number(player_slots[i][1])
-        new_player.move_to_tile_center(self.starting_positions[i])
-        self.players.append(new_player)
-        self.players_by_numbers[i] = new_player
-      else:
-        self.players_by_numbers[i] = None
-        
-    # give players starting items:
-    
-    start_items_string = string_split[1] if not all_items_cheat else "bbbbbFkxtsssssmp"
-    
-    self.player_starting_items = []
-    
-    for i in xrange(len(start_items_string)):
-      for player in self.players:
-        item_to_give = self.letter_to_item(start_items_string[i])
-        
-        player.give_item(item_to_give)
-      
-      self.player_starting_items.append(item_to_give)
-        
-    self.bombs = []                   ##< bombs on the map
-    self.sound_events = []            ##< list of currently happening sound event (see SoundPlayer class)
-    self.animation_events = []        ##< list of animation events, tuples in format (animation_event, coordinates)
-    self.items_to_give_away = []      ##< list of tuples in format (time_of_giveaway, list_of_items)
-
-    self.create_disease_cloud_at = 0  ##< at what time (in ms) the disease clouds should be released
-
   #----------------------------------------------------------------------------
 
   def get_starting_items(self):
@@ -1875,9 +1885,6 @@ class GameMap(object):
           if player_at_tile.get_disease() == Player.DISEASE_NONE:
             transmitted = True
             player_at_tile.set_disease(player.get_disease(),player.get_disease_time())  # transmit disease
-          
-        #if transmitted and random.randint(0,2) == 0:
-        #  self.add_sound_event(SoundPlayer.SOUND_EVENT_GO_AWAY)
 
   #----------------------------------------------------------------------------
 
