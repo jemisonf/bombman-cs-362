@@ -1,4 +1,4 @@
-from bombman import Player
+from playerClass import Player, Positionable
 import unittest
 
 print "Running Player class tests"
